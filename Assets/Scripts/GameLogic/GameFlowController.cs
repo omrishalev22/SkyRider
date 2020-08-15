@@ -34,7 +34,7 @@ public class GameFlowController : MonoBehaviour
     List<GameObject> gameObjectsList = new List<GameObject>();
 
     void Start()
-    {        
+    {
         InitGame();
     }
 
@@ -56,6 +56,9 @@ public class GameFlowController : MonoBehaviour
 
         // start spwaning game level recuresivly
         StartCoroutine(ChangeGameLevel());
+
+        // Starts the timer
+        TimerController.instance.BeginTimer();
     }
 
     private int getBoardSize()
