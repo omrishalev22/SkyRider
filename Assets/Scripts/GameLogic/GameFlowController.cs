@@ -43,6 +43,7 @@ public class GameFlowController : MonoBehaviour
         if (this.isGameOver)
         {
             StopAllCoroutines();
+            TimerController.instance.EndTimer();
         }
     }
 
