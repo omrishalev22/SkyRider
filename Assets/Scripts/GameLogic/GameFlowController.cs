@@ -73,7 +73,7 @@ public class GameFlowController : MonoBehaviour
         {
             this.LevelTextCanvas.GetComponentInChildren<Text>().text = $"Level {level}";
             this.level++;
-            this.CameraOffset += this.CameraOffset * 1.1f; // increase tile change rate
+            this.CameraOffset += this.CameraOffset * Camera.main.velocity.z * 0.5f; // increase tile change rate
             this.IncreaseGameSpeed();
         }
         
@@ -111,7 +111,8 @@ public class GameFlowController : MonoBehaviour
         {
             if (gameObject && Camera.main.transform.position.z >= gameObject.transform.position.z)
             {
-                Destroy(gameObject, 2);
+                // destroy unseen elemetn after 0.5 second from outbound
+                Destroy(gameObject, 1);
             }
         });
         
@@ -120,6 +121,7 @@ public class GameFlowController : MonoBehaviour
     private void InstantiateNewGameObject(Transform original, Vector3 position, Quaternion q)
     {        
         var clone = Instantiate(original, position, q);
+        // add element to list so it can later on be destroyed
         gameObjectsList.Add(clone.gameObject);
     }
 
