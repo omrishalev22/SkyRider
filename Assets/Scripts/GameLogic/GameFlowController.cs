@@ -47,7 +47,6 @@ public class GameFlowController : MonoBehaviour
     private void InitGame()
     {
         nextTileSpawn.z = TileOffset;
-        this.boardWidthDimensions = (this.getBoardSize()/2 * -1, this.getBoardSize()/2);
 
         // start spwaning new tiles recuresivly
         StartCoroutine(spawnTile());
