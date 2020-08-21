@@ -73,7 +73,7 @@ public class GameFlowController : MonoBehaviour
         {
             this.LevelTextCanvas.GetComponentInChildren<Text>().text = $"Level {level}";
             this.level++;
-            this.CameraOffset += this.CameraOffset * Camera.main.velocity.z * 0.5f; // increase tile change rate
+            this.CameraOffset = Camera.main.GetComponent<CameraMoveController>().cameraVelocity * 6; // increase tile change rate
             this.IncreaseGameSpeed();
         }
         
@@ -87,7 +87,8 @@ public class GameFlowController : MonoBehaviour
         var randomNum = UnityEngine.Random.Range(0, 10); // random number selection for randomization
 
         // create new objects only when camera gets closer to its end
-        if (Camera.main.transform.position.z + CameraOffset >= nextTileSpawn.z)
+        Debug.Log($"camera: {Camera.main.transform.position.z + this.CameraOffset}, nexttile: {nextTileSpawn.z}");
+        if (Camera.main.transform.position.z + this.CameraOffset >= nextTileSpawn.z)
         {
             GenerateRandomWalls(randomNum);
             GenerateRandomFallingRocks(randomNum);
@@ -97,10 +98,10 @@ public class GameFlowController : MonoBehaviour
             InstantiateNewGameObject(tileObject, nextTileSpawn, tileObject.rotation);
             nextTileSpawn.z += tileObject.transform.localScale.z * tileObject.position.z;
 
-            DestroyUnseenObjects(); // clean initiation of objects that are not under the camera view
             StartCoroutine(spawnTile());
         }
 
+        DestroyUnseenObjects(); // clean initiation of objects that are not under the camera view
         StartCoroutine(spawnTile());
     }
 
@@ -111,7 +112,7 @@ public class GameFlowController : MonoBehaviour
         {
             if (gameObject && Camera.main.transform.position.z >= gameObject.transform.position.z)
             {
-                // destroy unseen elemetn after 0.5 second from outbound
+                // destroy unseen elemetn after 1 second from outbound
                 Destroy(gameObject, 1);
             }
         });
