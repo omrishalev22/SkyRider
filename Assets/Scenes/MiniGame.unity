@@ -356,6 +356,7 @@ GameObject:
   m_Component:
   - component: {fileID: 675808070}
   - component: {fileID: 675808071}
+  - component: {fileID: 675808072}
   - component: {fileID: 675808068}
   - component: {fileID: 675808069}
   m_Layer: 0
@@ -428,6 +429,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeCounter: {fileID: 797973707747377351}
+--- !u!114 &675808072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675808067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 947d6b97a4c884348b828629dffd74fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &701668942
 GameObject:
   m_ObjectHideFlags: 0

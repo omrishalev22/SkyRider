@@ -51,4 +51,9 @@ public class TimerController : MonoBehaviour
             yield return null;
         }
     }
+
+    public string GetTime()
+    {
+        return timePlaying.ToString("mm':'ss'.'ff");
+    }
 }

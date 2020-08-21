@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameFlowController : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class GameFlowController : MonoBehaviour
     private Vector3 nextrock3Obj;
 
     public bool isGameOver = false;
+    public bool isGameRunning = true;
     private int level = 1;
     private (int min, int max) boardWidthDimensions;
     private (int min, int max) gameRightOutsideBoundary;
@@ -40,10 +42,13 @@ public class GameFlowController : MonoBehaviour
 
     void Update()
     {
-        if (this.isGameOver)
+        if (this.isGameOver && this.isGameRunning)
         {
             StopAllCoroutines();
             TimerController.instance.EndTimer();
+            ScoresController.instance.AddHighscoreEntry(level, TimerController.instance.GetTime());
+            SceneManager.LoadScene(2);
+            isGameRunning = false;
         }
     }
 
@@ -60,6 +65,9 @@ public class GameFlowController : MonoBehaviour
 
         // Starts the timer
         TimerController.instance.BeginTimer();
+
+        isGameOver = false;
+        isGameRunning = true;
     }
 
     private int getBoardSize()
