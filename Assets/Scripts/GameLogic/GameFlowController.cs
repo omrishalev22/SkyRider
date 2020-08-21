@@ -23,9 +23,6 @@ public class GameFlowController : MonoBehaviour
 
     public bool isGameOver = false;
     private int level = 1;
-    private (int min, int max) boardWidthDimensions;
-    private (int min, int max) gameRightOutsideBoundary;
-    private (int min, int max) gameLeftOutsideBoundary;
 
     private const int TileOffset = 90;
     private const int GameLevelInterval = 15; // increase level every X seconds
@@ -87,7 +84,6 @@ public class GameFlowController : MonoBehaviour
         var randomNum = UnityEngine.Random.Range(0, 10); // random number selection for randomization
 
         // create new objects only when camera gets closer to its end
-        Debug.Log($"camera: {Camera.main.transform.position.z + this.CameraOffset}, nexttile: {nextTileSpawn.z}");
         if (Camera.main.transform.position.z + this.CameraOffset >= nextTileSpawn.z)
         {
             GenerateRandomWalls(randomNum);
