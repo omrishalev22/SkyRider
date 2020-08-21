@@ -10,17 +10,37 @@ public class Boundaries : MonoBehaviour
     void Start()
     {
         this.rb = transform.GetComponent<Rigidbody>();
+        this.screenBounds = Camera.main.transform.position;
     }
 
     void LateUpdate()
     {
-        Vector3 viewPos = transform.position;
-        screenBounds = Camera.main.transform.position;
-        viewPos.x = Mathf.Clamp(viewPos.x, -25f, 25f);
-        viewPos.z = Mathf.Clamp(viewPos.z, screenBounds.z + 10f, screenBounds.z + 100f );
-       
-        this.rb.MovePosition(viewPos);
-        this.rb.AddForce(0, 0, 10f);
-        this.rb.velocity = new Vector3(0, 0, 50f);
+
+        // this.rb.MovePosition(viewPos);
+        var cameraBottomBoundaryZ = Camera.main.transform.position.z + 10f;
+        var cameraLeftBoundaryX = this.screenBounds.x - 25f;
+        var cameraRightBoundaryX = this.screenBounds.x + 25f;
+        
+        var playerPositionZ = this.transform.position.z;
+        var playerPositionX = this.transform.position.x;
+
+        // Bound Z minimum position
+        if(playerPositionZ < cameraBottomBoundaryZ)
+        {
+            playerPositionZ = cameraBottomBoundaryZ;
+        }
+
+        // Bound left and right X-Axis
+        if (playerPositionX < cameraLeftBoundaryX) 
+        {
+            playerPositionX = cameraLeftBoundaryX;
+        }
+
+         if (playerPositionX > cameraRightBoundaryX){
+            playerPositionX = cameraRightBoundaryX;
+        }
+
+        this.transform.position = new Vector3(playerPositionX, this.transform.position.y, playerPositionZ);
+        
     }
 }
