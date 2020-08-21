@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
         if(other.gameObject.CompareTag("Pick Up"))
         {
             other.gameObject.SetActive(false);
+            gameFlowController.IncreaseScore();
         }
 
         if (other.gameObject.CompareTag("Block"))
@@ -42,7 +43,7 @@ public class PlayerController : MonoBehaviour
             Camera.main.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0); // stop camera from moving in case
             transform.gameObject.SetActive(false);
             Instantiate(explosion, transform.position, transform.rotation);
-            this.gameFlowController.isGameOver = true;
+            this.gameFlowController.SetGameOver();
         }
     }
 }

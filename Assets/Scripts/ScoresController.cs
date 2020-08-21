@@ -48,15 +48,14 @@ public class ScoresController : MonoBehaviour
 
     public void AddHighscoreEntry(int score, string timer)
     {
-        Debug.Log(highscoreEntryList.Count);
         HighscoreEntry newEntry = new HighscoreEntry { score = score, timer = timer };
         highscoreEntryList.Add(newEntry);
         SortHighscoreEntryList(highscoreEntryList);
         
     }
 
-    public List<HighscoreEntry> GetHighscoreEntries()
+    public List<HighscoreEntry> GetHighscoreEntries(int firstEntries)
     {
-        return highscoreEntryList;
+        return highscoreEntryList.GetRange(0, firstEntries);
     }
 }

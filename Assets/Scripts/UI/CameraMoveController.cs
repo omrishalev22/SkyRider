@@ -19,7 +19,7 @@ public class CameraMoveController : MonoBehaviour
     void Update()
     {
         // 0 = game over
-        if(cameraVelocity != lastVelocity && gameFlow && !gameFlow.isGameOver)
+        if(cameraVelocity != lastVelocity && gameFlow && !gameFlow.GetGameOver())
         {
             GetComponent<Rigidbody>().velocity = new Vector3(0, 0, cameraVelocity);
         }

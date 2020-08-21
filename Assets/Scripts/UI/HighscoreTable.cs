@@ -8,6 +8,7 @@ public class HighscoreTable : MonoBehaviour
     private Transform entryContainer;
     private Transform entryTemplate;
     private List<Transform> highscoreEntryTransformList;
+    private int totalEntries = 10;
 
     private void Awake()
     {
@@ -20,7 +21,7 @@ public class HighscoreTable : MonoBehaviour
 
     private void Start()
     {
-        foreach (ScoresController.HighscoreEntry highscoreEntry in ScoresController.instance.GetHighscoreEntries())
+        foreach (ScoresController.HighscoreEntry highscoreEntry in ScoresController.instance.GetHighscoreEntries(totalEntries))
         {
             CreateHighscoreEntryTransform(highscoreEntry, entryContainer, highscoreEntryTransformList);
         }

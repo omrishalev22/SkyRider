@@ -10,6 +10,11 @@ public class MainMenuButtons : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    public void GoToScoreboard()
+    {
+        SceneManager.LoadScene(2);
+    }
+
     public void QuitGame()
     {
         Application.Quit();

@@ -13,7 +13,8 @@ public class GameFlowController : MonoBehaviour
     public Transform blockingWallObj2;
     public Transform rockObj;
     public Transform rock3Obj;
-    public Canvas LevelTextCanvas;
+    public Text LevelText;
+    public Text ScoreText;
 
     private Vector3 nextTileSpawn;
     private Vector3 nextPickUpSpwan;
@@ -22,13 +23,16 @@ public class GameFlowController : MonoBehaviour
     private Vector3 nextrockObj;
     private Vector3 nextrock3Obj;
 
-    public bool isGameOver = false;
-    public bool isGameRunning = true;
-    private int level = 1;
+    private bool isGameOver = false;
+    private bool isGameRunning = true;
+    private int level = 0;
+    private int score = 0;
 
     private const int TileOffset = 90;
     private const int GameLevelInterval = 15; // increase level every X seconds
     private float CameraOffset = 100f; // create new tile every X     
+    private float timeElapsedFromGameOver = 0f;
+    private float delayBeforeMovingSceneOnGameFailure = 2f;
 
     List<GameObject> gameObjectsList = new List<GameObject>();
 
@@ -39,13 +43,14 @@ public class GameFlowController : MonoBehaviour
 
     void Update()
     {
-        if (this.isGameOver && this.isGameRunning)
+        if (isGameOver && isGameRunning)
         {
-            StopAllCoroutines();
-            TimerController.instance.EndTimer();
-            ScoresController.instance.AddHighscoreEntry(level, TimerController.instance.GetTime());
-            SceneManager.LoadScene(2);
-            isGameRunning = false;
+            timeElapsedFromGameOver += Time.deltaTime;
+            if (timeElapsedFromGameOver > delayBeforeMovingSceneOnGameFailure)
+            {
+                SceneManager.LoadScene(2);
+                isGameRunning = false;
+            }
         }
     }
 
@@ -54,7 +59,7 @@ public class GameFlowController : MonoBehaviour
         nextTileSpawn.z = TileOffset;
 
         // start spwaning new tiles recuresivly
-        StartCoroutine(spawnTile());
+        StartCoroutine(SpawnTile());
 
         // start spwaning game level recuresivly
         StartCoroutine(ChangeGameLevel());
@@ -64,9 +69,31 @@ public class GameFlowController : MonoBehaviour
 
         isGameOver = false;
         isGameRunning = true;
+        score = 0;
+        level = 1;
+        timeElapsedFromGameOver = 0;
     }
 
-    private int getBoardSize()
+    public void IncreaseScore()
+    {
+        score += 1;
+        ScoreText.text = $"Score: {score}";
+    }
+
+    public void SetGameOver()
+    {
+        StopAllCoroutines();
+        TimerController.instance.EndTimer();
+        ScoresController.instance.AddHighscoreEntry(score, TimerController.instance.GetTime());
+        isGameOver = true;
+    }
+
+    public bool GetGameOver()
+    {
+        return isGameOver;
+    }
+
+    private int GetBoardSize()
     {
         return Convert.ToInt32(this.tileObject.GetComponent<MeshFilter>().mesh.bounds.size.x * this.tileObject.localScale.x);
     }
@@ -75,8 +102,8 @@ public class GameFlowController : MonoBehaviour
     {
         if (!this.isGameOver)
         {
-            this.LevelTextCanvas.GetComponentInChildren<Text>().text = $"Level {level}";
             this.level++;
+            this.LevelText.text = $"Level {level}";
             this.CameraOffset = Camera.main.GetComponent<CameraMoveController>().cameraVelocity * 6; // increase tile change rate
             this.IncreaseGameSpeed();
         }
@@ -85,7 +112,7 @@ public class GameFlowController : MonoBehaviour
         StartCoroutine(ChangeGameLevel());
     }
 
-    IEnumerator spawnTile()
+    IEnumerator SpawnTile()
     {
         yield return new WaitForSeconds(1);
         var randomNum = UnityEngine.Random.Range(0, 10); // random number selection for randomization
@@ -101,11 +128,11 @@ public class GameFlowController : MonoBehaviour
             InstantiateNewGameObject(tileObject, nextTileSpawn, tileObject.rotation);
             nextTileSpawn.z += tileObject.transform.localScale.z * tileObject.position.z;
 
-            StartCoroutine(spawnTile());
+            StartCoroutine(SpawnTile());
         }
 
         DestroyUnseenObjects(); // clean initiation of objects that are not under the camera view
-        StartCoroutine(spawnTile());
+        StartCoroutine(SpawnTile());
     }
 
     // destroy instantiated object that are not part of the screen anymore
