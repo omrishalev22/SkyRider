@@ -21,11 +21,15 @@ public class HighscoreTable : MonoBehaviour
 
     private void Start()
     {
-        foreach (ScoresController.HighscoreEntry highscoreEntry in ScoresController.instance.GetHighscoreEntries(totalEntries))
+        if (ScoresController.instance)
         {
-            CreateHighscoreEntryTransform(highscoreEntry, entryContainer, highscoreEntryTransformList);
+            foreach (ScoresController.HighscoreEntry highscoreEntry in ScoresController.instance.GetHighscoreEntries(totalEntries))
+            {
+                CreateHighscoreEntryTransform(highscoreEntry, entryContainer, highscoreEntryTransformList);
+            }
         }
     }
+
     private void CreateHighscoreEntryTransform(ScoresController.HighscoreEntry highscoreEntry, Transform container, List<Transform> transformList)
     {
         float templateHeight = 30f;

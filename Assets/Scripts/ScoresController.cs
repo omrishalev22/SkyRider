@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ScoresController : MonoBehaviour
 {
@@ -56,6 +57,6 @@ public class ScoresController : MonoBehaviour
 
     public List<HighscoreEntry> GetHighscoreEntries(int firstEntries)
     {
-        return highscoreEntryList.GetRange(0, firstEntries);
+        return highscoreEntryList.GetRange(0, Math.Min(firstEntries, highscoreEntryList.Count));
     }
 }
